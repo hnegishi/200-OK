@@ -3,6 +3,7 @@
 require_relative '../scene'
 require_relative '../button'
 require_relative '../constants'
+require_relative '../score_manager'
 
 class MenuScene < Scene
   def initialize(scene_manager)
@@ -48,22 +49,45 @@ class MenuScene < Scene
   end
 
   def create_mode_buttons
+    challenge_high = ScoreManager.high_score(Constants::GameMode::CHALLENGE)
+    endless_high = ScoreManager.high_score(Constants::GameMode::ENDLESS)
+
     @challenge_button = Button.new(
       x: Constants::WINDOW_WIDTH / 2 - 200,
-      y: 340,
+      y: 320,
       width: 400,
-      height: 80,
+      height: 70,
       text: 'チャレンジモード（30問）'
     )
     add_element(@challenge_button)
 
+    @challenge_high_text = Text.new(
+      "ハイスコア: #{challenge_high}",
+      x: Constants::WINDOW_WIDTH / 2 - 50,
+      y: 395,
+      size: 16,
+      color: Constants::Colors::TEXT_SECONDARY,
+      z: Constants::ZIndex::TEXT
+    )
+    add_element(@challenge_high_text)
+
     @endless_button = Button.new(
       x: Constants::WINDOW_WIDTH / 2 - 200,
-      y: 450,
+      y: 440,
       width: 400,
-      height: 80,
+      height: 70,
       text: 'エンドレスモード（3ミス終了）'
     )
     add_element(@endless_button)
+
+    @endless_high_text = Text.new(
+      "ハイスコア: #{endless_high}",
+      x: Constants::WINDOW_WIDTH / 2 - 50,
+      y: 515,
+      size: 16,
+      color: Constants::Colors::TEXT_SECONDARY,
+      z: Constants::ZIndex::TEXT
+    )
+    add_element(@endless_high_text)
   end
 end

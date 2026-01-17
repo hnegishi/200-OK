@@ -3,6 +3,7 @@
 require_relative '../scene'
 require_relative '../button'
 require_relative '../constants'
+require_relative '../score_manager'
 
 class GameOverScene < Scene
   def initialize(scene_manager)
@@ -14,6 +15,8 @@ class GameOverScene < Scene
     @score = score
     @total = total
     @mode = mode
+    @is_new_record = ScoreManager.update_high_score(mode, score)
+    @high_score = ScoreManager.high_score(mode)
 
     create_results_display
     create_action_buttons
@@ -30,30 +33,45 @@ class GameOverScene < Scene
   private
 
   def create_results_display
+    content_x = Constants::WINDOW_WIDTH / 2 - 200
+
+    title_text = @is_new_record ? 'NEW RECORD!' : 'ゲーム終了'
+    title_color = @is_new_record ? Constants::Colors::SUCCESS : Constants::Colors::ACCENT
+
     @title = Text.new(
-      'ゲーム終了',
-      x: Constants::WINDOW_WIDTH / 2 - 100,
-      y: 100,
+      title_text,
+      x: content_x,
+      y: 80,
       size: 48,
-      color: Constants::Colors::ACCENT,
+      color: title_color,
       z: Constants::ZIndex::TEXT
     )
     add_element(@title)
 
     @score_label = Text.new(
       "最終スコア: #{@score}/#{@total}",
-      x: Constants::WINDOW_WIDTH / 2 - 120,
-      y: 200,
+      x: content_x,
+      y: 160,
       size: 32,
       color: Constants::Colors::TEXT_PRIMARY,
       z: Constants::ZIndex::TEXT
     )
     add_element(@score_label)
 
+    @high_score_label = Text.new(
+      "ハイスコア: #{@high_score}",
+      x: content_x,
+      y: 210,
+      size: 24,
+      color: Constants::Colors::ACCENT,
+      z: Constants::ZIndex::TEXT
+    )
+    add_element(@high_score_label)
+
     percentage = @total.positive? ? (@score.to_f / @total * 100).round(1) : 0
     @percentage_label = Text.new(
       "正答率: #{percentage}%",
-      x: Constants::WINDOW_WIDTH / 2 - 80,
+      x: content_x,
       y: 260,
       size: 24,
       color: Constants::Colors::TEXT_SECONDARY,
@@ -63,8 +81,8 @@ class GameOverScene < Scene
 
     @message = Text.new(
       result_message(percentage),
-      x: Constants::WINDOW_WIDTH / 2 - 180,
-      y: 320,
+      x: content_x,
+      y: 310,
       size: 20,
       color: Constants::Colors::TEXT_SECONDARY,
       z: Constants::ZIndex::TEXT
@@ -75,7 +93,7 @@ class GameOverScene < Scene
   def create_action_buttons
     @retry_button = Button.new(
       x: Constants::WINDOW_WIDTH / 2 - 200,
-      y: 400,
+      y: 380,
       width: 400,
       height: 60,
       text: 'もう一度プレイ'
@@ -84,7 +102,7 @@ class GameOverScene < Scene
 
     @menu_button = Button.new(
       x: Constants::WINDOW_WIDTH / 2 - 200,
-      y: 480,
+      y: 460,
       width: 400,
       height: 60,
       text: 'メニューに戻る'
