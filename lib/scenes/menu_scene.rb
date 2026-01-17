@@ -15,8 +15,16 @@ class MenuScene < Scene
 
   def enter(**_params)
     AudioManager.play_bgm
+    @blink_timer = 0
     create_logo
     create_mode_cards
+  end
+
+  def update
+    @blink_timer += 1
+    # ゆっくりとした点滅（約2秒周期）
+    opacity = 0.5 + 0.5 * Math.sin(@blink_timer * 0.05)
+    @subtitle.color.opacity = opacity
   end
 
   def handle_click(x, y)
