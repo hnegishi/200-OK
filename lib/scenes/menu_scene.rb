@@ -73,7 +73,7 @@ class MenuScene < Scene
       width: card_width,
       height: card_height,
       title: 'チャレンジモード',
-      description: '30問のクイズに挑戦！全問正解を目指そう',
+      description: '10問のクイズに挑戦！全問正解を目指そう',
       high_score: challenge_high,
       accent_color: '#00b894'
     )
