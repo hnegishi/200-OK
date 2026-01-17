@@ -4,6 +4,8 @@ HTTPステータスコードを学べる4択クイズゲームです。Ruby2Dを
 
 <img width="793" height="593" alt="image" src="https://github.com/user-attachments/assets/df43353c-1f4f-4952-9912-7785c4d5a87f" />
 
+<img width="793" height="592" alt="image" src="https://github.com/user-attachments/assets/cc2c3bce-e286-45ce-b4f8-6ea49d9d7bd3" />
+
 ## 必要環境
 
 - Ruby 3.0以上
