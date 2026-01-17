@@ -11,7 +11,7 @@ class MenuScene < Scene
   end
 
   def enter(**_params)
-    create_title
+    create_logo
     create_mode_buttons
   end
 
@@ -25,21 +25,21 @@ class MenuScene < Scene
 
   private
 
-  def create_title
-    @title = Text.new(
-      'HTTPステータスコードクイズ',
-      x: Constants::WINDOW_WIDTH / 2 - 200,
-      y: 100,
-      size: 36,
-      color: Constants::Colors::TEXT_PRIMARY,
+  def create_logo
+    @logo = Image.new(
+      'assets/images/image.png',
+      x: 50,
+      y: 30,
+      width: 700,
+      height: 210,
       z: Constants::ZIndex::TEXT
     )
-    add_element(@title)
+    add_element(@logo)
 
     @subtitle = Text.new(
       'ゲームモードを選択してください',
       x: Constants::WINDOW_WIDTH / 2 - 140,
-      y: 180,
+      y: 270,
       size: 20,
       color: Constants::Colors::TEXT_SECONDARY,
       z: Constants::ZIndex::TEXT
@@ -50,7 +50,7 @@ class MenuScene < Scene
   def create_mode_buttons
     @challenge_button = Button.new(
       x: Constants::WINDOW_WIDTH / 2 - 200,
-      y: 280,
+      y: 340,
       width: 400,
       height: 80,
       text: 'チャレンジモード（30問）'
@@ -59,7 +59,7 @@ class MenuScene < Scene
 
     @endless_button = Button.new(
       x: Constants::WINDOW_WIDTH / 2 - 200,
-      y: 400,
+      y: 450,
       width: 400,
       height: 80,
       text: 'エンドレスモード（3ミス終了）'
