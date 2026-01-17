@@ -35,6 +35,11 @@ class PlayingScene < Scene
   end
 
   def handle_click(x, y)
+    if @menu_button.clicked?(x, y)
+      change_scene(Constants::Scenes::MENU)
+      return
+    end
+
     return unless @buttons_enabled
 
     @choice_buttons.each_with_index do |button, index|
@@ -48,11 +53,23 @@ class PlayingScene < Scene
   private
 
   def create_ui
+    create_menu_button
     create_status_display
     create_score_display
     create_progress_display
     create_choice_buttons
     create_feedback_display
+  end
+
+  def create_menu_button
+    @menu_button = Button.new(
+      x: Constants::WINDOW_WIDTH - 120,
+      y: 10,
+      width: 110,
+      height: 35,
+      text: 'メニュー'
+    )
+    add_element(@menu_button)
   end
 
   def create_status_display
@@ -82,7 +99,7 @@ class PlayingScene < Scene
   def create_progress_display
     @progress_text = Text.new(
       progress_label,
-      x: Constants::Layout::PROGRESS_X,
+      x: Constants::WINDOW_WIDTH / 2 - 45,
       y: Constants::Layout::PROGRESS_Y,
       size: Constants::Layout::SCORE_SIZE,
       color: Constants::Colors::TEXT_PRIMARY,
