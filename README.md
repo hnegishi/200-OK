@@ -2,6 +2,8 @@
 
 HTTPステータスコードを学べる4択クイズゲームです。Ruby2Dを使用して開発されています。
 
+<img width="788" height="586" alt="image" src="https://github.com/user-attachments/assets/5a6d94bc-eb30-4d81-b906-623c6067a6b4" />
+
 ## 必要環境
 
 - Ruby 3.0以上
