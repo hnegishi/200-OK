@@ -4,6 +4,7 @@ require_relative '../scene'
 require_relative '../button'
 require_relative '../constants'
 require_relative '../score_manager'
+require_relative '../audio_manager'
 
 class MenuScene < Scene
   def initialize(scene_manager)
@@ -12,6 +13,7 @@ class MenuScene < Scene
   end
 
   def enter(**_params)
+    AudioManager.play_bgm
     create_logo
     create_mode_buttons
   end
