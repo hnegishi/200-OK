@@ -10,6 +10,7 @@ class AudioManager
 
       @bgm ||= Music.new(BGM_PATH)
       @bgm.loop = true
+      @bgm.volume = @muted ? 0 : 100
       @bgm.play
       @playing = true
     end
@@ -35,6 +36,16 @@ class AudioManager
 
     def bgm_exists?
       File.exist?(BGM_PATH)
+    end
+
+    def toggle_mute
+      @muted = !muted?
+      @bgm.volume = @muted ? 0 : 100 if @bgm
+      @muted
+    end
+
+    def muted?
+      @muted || false
     end
   end
 end
