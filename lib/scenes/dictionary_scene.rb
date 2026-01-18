@@ -28,7 +28,7 @@ class DictionaryScene < Scene
   def update; end
 
   def handle_click(x, y)
-    if @back_button.clicked?(x, y)
+    if @menu_button.clicked?(x, y)
       change_scene(Constants::Scenes::MENU)
     end
   end
@@ -47,7 +47,7 @@ class DictionaryScene < Scene
   def create_ui
     create_header_background
     create_title
-    create_back_button
+    create_menu_button
     create_list
   end
 
@@ -75,16 +75,16 @@ class DictionaryScene < Scene
     add_element(@title)
   end
 
-  def create_back_button
-    @back_button = Button.new(
-      x: 20,
+  def create_menu_button
+    @menu_button = Button.new(
+      x: Constants::WINDOW_WIDTH - 120,
       y: 12,
-      width: 80,
+      width: 100,
       height: 35,
-      text: '戻る',
+      text: 'メニュー',
       z: Constants::ZIndex::OVERLAY + 1
     )
-    add_element(@back_button)
+    add_element(@menu_button)
   end
 
   def create_list
