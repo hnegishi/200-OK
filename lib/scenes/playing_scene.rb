@@ -4,6 +4,7 @@ require_relative '../scene'
 require_relative '../button'
 require_relative '../question'
 require_relative '../constants'
+require_relative '../http_data'
 
 class PlayingScene < Scene
   def initialize(scene_manager)
@@ -59,6 +60,7 @@ class PlayingScene < Scene
     create_progress_display
     create_choice_buttons
     create_feedback_display
+    create_explanation_display
   end
 
   def create_menu_button
@@ -139,6 +141,10 @@ class PlayingScene < Scene
     add_element(@feedback_text)
   end
 
+  def create_explanation_display
+    @explanation_texts = []
+  end
+
   def next_question
     @question_number += 1
     @current_question = Question.new
@@ -195,12 +201,60 @@ class PlayingScene < Scene
       @feedback_text.color = Constants::Colors::ERROR
     end
     @feedback_text.add
+
+    show_explanation
+  end
+
+  def show_explanation
+    explanation = HttpData.detailed_explanation(@current_question.correct_code)
+    wrapped_lines = wrap_text(explanation, Constants::Layout::EXPLANATION_MAX_WIDTH)
+
+    wrapped_lines.each_with_index do |line, index|
+      text = Text.new(
+        line,
+        x: Constants::Layout::BUTTON_X,
+        y: Constants::Layout::EXPLANATION_Y + (index * Constants::Layout::EXPLANATION_LINE_HEIGHT),
+        size: Constants::Layout::EXPLANATION_SIZE,
+        color: Constants::Colors::TEXT_SECONDARY,
+        z: Constants::ZIndex::FEEDBACK
+      )
+      @explanation_texts << text
+      add_element(text)
+    end
+  end
+
+  def wrap_text(text, max_width)
+    # 日本語文字はフォントサイズとほぼ同じ幅を持つ
+    chars_per_line = (max_width / Constants::Layout::EXPLANATION_SIZE).to_i
+    lines = []
+    current_line = ''
+
+    text.each_char do |char|
+      test_line = current_line + char
+      if test_line.length >= chars_per_line
+        lines << current_line
+        current_line = char
+      else
+        current_line = test_line
+      end
+    end
+    lines << current_line unless current_line.empty?
+    lines
   end
 
   def hide_feedback
     @showing_feedback = false
     @feedback_text.remove
+    hide_explanation
     @buttons_enabled = true
+  end
+
+  def hide_explanation
+    @explanation_texts.each do |text|
+      text.remove
+      @elements.delete(text)
+    end
+    @explanation_texts.clear
   end
 
   def check_game_over_or_continue

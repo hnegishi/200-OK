@@ -32,6 +32,12 @@ module Constants
     QUESTION_Y = 180
     QUESTION_SIZE = 24
 
+    # Explanation area (displayed during feedback, below feedback text)
+    EXPLANATION_Y = 220
+    EXPLANATION_SIZE = 16
+    EXPLANATION_MAX_WIDTH = 700
+    EXPLANATION_LINE_HEIGHT = 22
+
     # Button area
     BUTTON_START_Y = 280
     BUTTON_HEIGHT = 60
@@ -63,7 +69,7 @@ module Constants
     MODE_CHALLENGE_QUESTIONS = 10
     MODE_ENDLESS_MAX_WRONG = 3
     CHOICES_COUNT = 4
-    FEEDBACK_DISPLAY_FRAMES = 90 # 1.5 seconds at 60 FPS
+    FEEDBACK_DISPLAY_FRAMES = 180 # 3 seconds at 60 FPS (to allow reading explanation)
   end
 
   # Game Modes
