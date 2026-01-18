@@ -18,6 +18,7 @@ class PlayingScene < Scene
     @question_number = 0
     @wrong_count = 0
     @feedback_timer = 0
+    @question_timer = 0
     @showing_feedback = false
     @buttons_enabled = true
 
@@ -26,13 +27,33 @@ class PlayingScene < Scene
   end
 
   def update
-    return unless @showing_feedback
+    if @showing_feedback
+      @feedback_timer -= 1
+      if @feedback_timer <= 0
+        hide_feedback
+        check_game_over_or_continue
+      end
+    else
+      update_question_timer
+    end
+  end
 
-    @feedback_timer -= 1
-    return unless @feedback_timer <= 0
+  def update_question_timer
+    return unless @buttons_enabled
 
-    hide_feedback
-    check_game_over_or_continue
+    @question_timer -= 1
+    update_timer_bar
+
+    return unless @question_timer <= 0
+
+    process_timeout
+  end
+
+  def process_timeout
+    @buttons_enabled = false
+    @wrong_count += 1
+    @choice_buttons[@current_question.correct_index].set_state(Button::STATE_CORRECT)
+    show_feedback(false)
   end
 
   def handle_click(x, y)
@@ -58,6 +79,7 @@ class PlayingScene < Scene
     create_status_display
     create_score_display
     create_progress_display
+    create_timer_bar
     create_choice_buttons
     create_feedback_display
     create_explanation_display
@@ -110,6 +132,37 @@ class PlayingScene < Scene
     add_element(@progress_text)
   end
 
+  def create_timer_bar
+    # Background bar
+    @timer_bar_bg = Rectangle.new(
+      x: Constants::Layout::PROGRESS_BAR_X,
+      y: Constants::Layout::PROGRESS_BAR_Y,
+      width: Constants::Layout::PROGRESS_BAR_WIDTH,
+      height: Constants::Layout::PROGRESS_BAR_HEIGHT,
+      color: Constants::Colors::TIMER_BAR_BG,
+      z: Constants::ZIndex::TEXT
+    )
+    add_element(@timer_bar_bg)
+
+    # Fill bar (decreases as time runs out)
+    @timer_bar_fill = Rectangle.new(
+      x: Constants::Layout::PROGRESS_BAR_X,
+      y: Constants::Layout::PROGRESS_BAR_Y,
+      width: Constants::Layout::PROGRESS_BAR_WIDTH,
+      height: Constants::Layout::PROGRESS_BAR_HEIGHT,
+      color: Constants::Colors::TIMER_BAR_FILL,
+      z: Constants::ZIndex::TEXT + 1
+    )
+    add_element(@timer_bar_fill)
+  end
+
+  def update_timer_bar
+    max_frames = Constants::GameSettings::QUESTION_TIME_LIMIT_FRAMES
+    ratio = @question_timer.to_f / max_frames
+    ratio = 0 if ratio < 0
+    @timer_bar_fill.width = Constants::Layout::PROGRESS_BAR_WIDTH * ratio
+  end
+
   def create_choice_buttons
     @choice_buttons = []
     Constants::GameSettings::CHOICES_COUNT.times do |i|
@@ -148,7 +201,10 @@ class PlayingScene < Scene
   def next_question
     @question_number += 1
     @current_question = Question.new
+    @question_timer = Constants::GameSettings::QUESTION_TIME_LIMIT_FRAMES
     update_display
+    show_timer_bar
+    update_timer_bar
   end
 
   def update_display
@@ -202,7 +258,18 @@ class PlayingScene < Scene
     end
     @feedback_text.add
 
+    hide_timer_bar
     show_explanation
+  end
+
+  def hide_timer_bar
+    @timer_bar_bg.remove
+    @timer_bar_fill.remove
+  end
+
+  def show_timer_bar
+    @timer_bar_bg.add
+    @timer_bar_fill.add
   end
 
   def show_explanation

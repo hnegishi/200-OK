@@ -20,6 +20,8 @@ module Constants
     BUTTON_HOVER = '#16213e'
     BUTTON_CORRECT = '#00b894'
     BUTTON_WRONG = '#d63031'
+    TIMER_BAR_BG = '#333333'
+    TIMER_BAR_FILL = '#e94560'
   end
 
   # Layout
@@ -37,6 +39,12 @@ module Constants
     EXPLANATION_SIZE = 16
     EXPLANATION_MAX_WIDTH = 700
     EXPLANATION_LINE_HEIGHT = 22
+
+    # Timer progress bar
+    PROGRESS_BAR_Y = 260
+    PROGRESS_BAR_HEIGHT = 8
+    PROGRESS_BAR_WIDTH = 700
+    PROGRESS_BAR_X = 50
 
     # Button area
     BUTTON_START_Y = 280
@@ -70,6 +78,7 @@ module Constants
     MODE_ENDLESS_MAX_WRONG = 3
     CHOICES_COUNT = 4
     FEEDBACK_DISPLAY_FRAMES = 180 # 3 seconds at 60 FPS (to allow reading explanation)
+    QUESTION_TIME_LIMIT_FRAMES = 600 # 10 seconds at 60 FPS
   end
 
   # Game Modes
