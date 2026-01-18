@@ -72,14 +72,29 @@ class Button
       z: @z
     )
 
+    # テキストを中央揃えにする
+    text_width = estimate_text_width(@text_content, 18)
+    text_x = @x + (@width - text_width) / 2
+
     @text = Text.new(
       @text_content,
-      x: @x + 20,
+      x: text_x,
       y: @y + (@height / 2) - 10,
       size: 18,
       color: Constants::Colors::TEXT_PRIMARY,
       z: @z + 1
     )
+  end
+
+  def estimate_text_width(text, font_size)
+    # 日本語文字はフォントサイズとほぼ同じ幅、ASCII文字は約半分
+    text.chars.sum do |char|
+      if char.ord > 127
+        font_size
+      else
+        font_size * 0.6
+      end
+    end
   end
 
   def update_color

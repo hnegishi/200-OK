@@ -99,7 +99,7 @@ class MenuScene < Scene
     @dictionary_button = Button.new(
       x: 20,
       y: Constants::WINDOW_HEIGHT - 55,
-      width: 100,
+      width: 70,
       height: 40,
       text: '辞書'
     )
