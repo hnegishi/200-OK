@@ -121,9 +121,14 @@ class ModeCard
     )
     @elements << @badge_bg
 
+    # テキストを中央揃えにする（文字数に応じて位置を調整）
+    text_content = "Best: #{@high_score}"
+    text_width_estimate = text_content.length * 9 # フォントサイズ16pxの場合の概算
+    text_x = badge_x + (badge_width - text_width_estimate) / 2
+
     @badge_text = Text.new(
-      "Best: #{@high_score}",
-      x: badge_x + 10,
+      text_content,
+      x: text_x,
       y: badge_y + 5,
       size: 16,
       color: @accent_color,
