@@ -4,6 +4,7 @@ require_relative 'constants'
 require_relative 'scenes/menu_scene'
 require_relative 'scenes/playing_scene'
 require_relative 'scenes/game_over_scene'
+require_relative 'scenes/dictionary_scene'
 
 class SceneManager
   attr_reader :current_scene
@@ -28,11 +29,16 @@ class SceneManager
     @current_scene&.handle_click(x, y)
   end
 
+  def handle_scroll(delta_y)
+    @current_scene&.handle_scroll(delta_y) if @current_scene.respond_to?(:handle_scroll)
+  end
+
   private
 
   def register_scenes
     @scenes[Constants::Scenes::MENU] = MenuScene.new(self)
     @scenes[Constants::Scenes::PLAYING] = PlayingScene.new(self)
     @scenes[Constants::Scenes::GAME_OVER] = GameOverScene.new(self)
+    @scenes[Constants::Scenes::DICTIONARY] = DictionaryScene.new(self)
   end
 end

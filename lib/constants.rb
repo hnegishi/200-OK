@@ -92,5 +92,6 @@ module Constants
     MENU = :menu
     PLAYING = :playing
     GAME_OVER = :game_over
+    DICTIONARY = :dictionary
   end
 end

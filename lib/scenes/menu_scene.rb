@@ -18,6 +18,7 @@ class MenuScene < Scene
     @blink_timer = 0
     create_logo
     create_mode_cards
+    create_dictionary_button
   end
 
   def update
@@ -32,6 +33,8 @@ class MenuScene < Scene
       change_scene(Constants::Scenes::PLAYING, mode: Constants::GameMode::CHALLENGE)
     elsif @endless_card.clicked?(x, y)
       change_scene(Constants::Scenes::PLAYING, mode: Constants::GameMode::ENDLESS)
+    elsif @dictionary_button.clicked?(x, y)
+      change_scene(Constants::Scenes::DICTIONARY)
     end
   end
 
@@ -90,5 +93,16 @@ class MenuScene < Scene
       accent_color: '#e94560'
     )
     @endless_card.elements.each { |el| add_element(el) }
+  end
+
+  def create_dictionary_button
+    @dictionary_button = Button.new(
+      x: 20,
+      y: Constants::WINDOW_HEIGHT - 55,
+      width: 100,
+      height: 40,
+      text: '辞書'
+    )
+    add_element(@dictionary_button)
   end
 end

@@ -89,6 +89,10 @@ class Game
       end
     end
 
+    on :mouse_scroll do |event|
+      scene_manager.handle_scroll(event.delta_y)
+    end
+
     update do
       scene_manager.update
     end
