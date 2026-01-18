@@ -101,7 +101,8 @@ class MenuScene < Scene
       y: Constants::WINDOW_HEIGHT - 55,
       width: 70,
       height: 40,
-      text: '辞書'
+      text: '辞書',
+      align: :center
     )
     add_element(@dictionary_button)
   end

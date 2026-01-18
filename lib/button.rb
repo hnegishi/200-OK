@@ -12,13 +12,14 @@ class Button
   STATE_WRONG = :wrong
   STATE_DISABLED = :disabled
 
-  def initialize(x:, y:, width:, height:, text:, z: Constants::ZIndex::BUTTONS)
+  def initialize(x:, y:, width:, height:, text:, z: Constants::ZIndex::BUTTONS, align: :left)
     @x = x
     @y = y
     @width = width
     @height = height
     @text_content = text
     @z = z
+    @align = align
     @enabled = true
     @state = STATE_DEFAULT
     @visible = true
@@ -37,6 +38,7 @@ class Button
   def text=(new_text)
     @text_content = new_text
     @text.text = new_text
+    @text.x = calculate_text_x
   end
 
   def set_state(new_state)
@@ -72,9 +74,8 @@ class Button
       z: @z
     )
 
-    # テキストを中央揃えにする
-    text_width = estimate_text_width(@text_content, 18)
-    text_x = @x + (@width - text_width) / 2
+    # テキスト位置を計算
+    text_x = calculate_text_x
 
     @text = Text.new(
       @text_content,
@@ -84,6 +85,16 @@ class Button
       color: Constants::Colors::TEXT_PRIMARY,
       z: @z + 1
     )
+  end
+
+  def calculate_text_x
+    case @align
+    when :center
+      text_width = estimate_text_width(@text_content, 18)
+      @x + (@width - text_width) / 2
+    else
+      @x + 20
+    end
   end
 
   def estimate_text_width(text, font_size)

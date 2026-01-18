@@ -82,7 +82,8 @@ class DictionaryScene < Scene
       width: 100,
       height: 35,
       text: 'メニュー',
-      z: Constants::ZIndex::OVERLAY + 1
+      z: Constants::ZIndex::OVERLAY + 1,
+      align: :center
     )
     add_element(@menu_button)
   end

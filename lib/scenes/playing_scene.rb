@@ -91,7 +91,8 @@ class PlayingScene < Scene
       y: 10,
       width: 110,
       height: 35,
-      text: 'メニュー'
+      text: 'メニュー',
+      align: :center
     )
     add_element(@menu_button)
   end
