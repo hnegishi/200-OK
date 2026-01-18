@@ -106,8 +106,12 @@ class ModeCard
   end
 
   def create_high_score_badge
-    badge_width = 120
-    badge_height = 28
+    text_content = "Best: #{@high_score}"
+    # テキスト幅に合わせてバッジサイズを動的に計算
+    text_width_estimate = text_content.length * 9
+    padding = 16
+    badge_width = text_width_estimate + padding
+    badge_height = 26
     badge_x = @x + @width - badge_width - 15
     badge_y = @y + (@height / 2) - (badge_height / 2)
 
@@ -121,15 +125,12 @@ class ModeCard
     )
     @elements << @badge_bg
 
-    # テキストを中央揃えにする（文字数に応じて位置を調整）
-    text_content = "Best: #{@high_score}"
-    text_width_estimate = text_content.length * 9 # フォントサイズ16pxの場合の概算
-    text_x = badge_x + (badge_width - text_width_estimate) / 2
+    text_x = badge_x + padding / 2
 
     @badge_text = Text.new(
       text_content,
       x: text_x,
-      y: badge_y + 5,
+      y: badge_y + 4,
       size: 16,
       color: @accent_color,
       z: Constants::ZIndex::TEXT
