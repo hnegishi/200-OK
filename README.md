@@ -43,6 +43,9 @@ $ ruby main.rb
 ## 機能
 
 - HTTPステータスコード約40種類を収録
+- 10秒の制限時間付きクイズ
+- 回答後に詳細な解説を表示
+- HTTPステータスコード辞書機能
 - ハイスコア記録機能
 - BGM再生（ミュート可能）
 
@@ -75,7 +78,8 @@ $ ruby main.rb
     ├── audio_manager.rb      # BGM管理
     ├── game.rb               # メインゲームクラス
     └── scenes/
-        ├── menu_scene.rb     # メニュー画面
-        ├── playing_scene.rb  # ゲームプレイ画面
-        └── game_over_scene.rb # 結果画面
+        ├── menu_scene.rb      # メニュー画面
+        ├── playing_scene.rb   # ゲームプレイ画面
+        ├── game_over_scene.rb # 結果画面
+        └── dictionary_scene.rb # HTTPステータスコード辞書画面
 ```
