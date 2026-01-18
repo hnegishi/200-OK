@@ -6,11 +6,12 @@ require_relative '../constants'
 require_relative '../http_data'
 
 class DictionaryScene < Scene
-  ITEM_HEIGHT = 55
+  ITEM_HEIGHT = 85
   ITEM_START_Y = 70
   SCROLL_SPEED = 30
   VISIBLE_AREA_TOP = 70
   VISIBLE_AREA_BOTTOM = Constants::WINDOW_HEIGHT - 10
+  MAX_CHARS_PER_LINE = 45
 
   def initialize(scene_manager)
     super
@@ -114,28 +115,50 @@ class DictionaryScene < Scene
     code_text = Text.new(
       code.to_s,
       x: 40,
-      y: base_y + 6,
-      size: 22,
+      y: base_y + 10,
+      size: 24,
       color: code_color,
       z: Constants::ZIndex::TEXT
     )
     elements << code_text
     add_element(code_text)
 
-    # 簡潔な説明
-    description = HttpData.description(code)
-    desc_text = Text.new(
-      description,
-      x: 110,
-      y: base_y + 10,
-      size: 14,
-      color: Constants::Colors::TEXT_PRIMARY,
-      z: Constants::ZIndex::TEXT
-    )
-    elements << desc_text
-    add_element(desc_text)
+    # 詳細な説明（複数行対応）
+    explanation = HttpData.detailed_explanation(code)
+    lines = wrap_text(explanation)
 
-    @list_items << { code: code, index: index, base_y: base_y, elements: elements }
+    lines.each_with_index do |line, line_index|
+      desc_text = Text.new(
+        line,
+        x: 110,
+        y: base_y + 10 + (line_index * 20),
+        size: 14,
+        color: Constants::Colors::TEXT_PRIMARY,
+        z: Constants::ZIndex::TEXT
+      )
+      elements << desc_text
+      add_element(desc_text)
+    end
+
+    @list_items << { code: code, index: index, base_y: base_y, elements: elements, line_count: lines.length }
+  end
+
+  def wrap_text(text)
+    lines = []
+    current_line = ''
+
+    text.each_char do |char|
+      if current_line.length >= MAX_CHARS_PER_LINE
+        lines << current_line
+        current_line = char
+      else
+        current_line += char
+      end
+    end
+    lines << current_line unless current_line.empty?
+
+    # 最大3行まで
+    lines.take(3)
   end
 
   def update_item_positions
@@ -151,9 +174,10 @@ class DictionaryScene < Scene
           when 0 # 背景
             el.y = new_y
           when 1 # コード
-            el.y = new_y + 6
-          when 2 # 説明
             el.y = new_y + 10
+          else # 説明行（複数行対応）
+            line_index = el_index - 2
+            el.y = new_y + 10 + (line_index * 20)
           end
         else
           el.remove
