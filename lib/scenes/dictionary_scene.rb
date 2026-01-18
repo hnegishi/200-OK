@@ -34,7 +34,7 @@ class DictionaryScene < Scene
 
   def handle_scroll(delta_y)
     max_scroll = calculate_max_scroll
-    @scroll_offset += delta_y * SCROLL_SPEED
+    @scroll_offset -= delta_y * SCROLL_SPEED
     @scroll_offset = 0 if @scroll_offset > 0
     @scroll_offset = -max_scroll if @scroll_offset < -max_scroll
 
