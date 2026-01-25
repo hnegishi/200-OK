@@ -75,7 +75,7 @@ module Constants
   # Game Settings
   module GameSettings
     MODE_CHALLENGE_QUESTIONS = 10
-    MODE_ENDLESS_MAX_WRONG = 3
+    MODE_ENDLESS_MAX_WRONG = 1
     CHOICES_COUNT = 4
     FEEDBACK_DISPLAY_FRAMES = 180 # 3 seconds at 60 FPS (to allow reading explanation)
     QUESTION_TIME_LIMIT_FRAMES = 600 # 10 seconds at 60 FPS
