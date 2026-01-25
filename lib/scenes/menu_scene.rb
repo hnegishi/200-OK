@@ -88,7 +88,7 @@ class MenuScene < Scene
       width: card_width,
       height: card_height,
       title: 'エンドレスモード',
-      description: '3回ミスするまで続く無限チャレンジ',
+      description: '1回ミスしたら終了の無限チャレンジ',
       high_score: endless_high,
       accent_color: '#e94560'
     )
