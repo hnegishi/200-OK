@@ -2,7 +2,7 @@
 
 HTTPステータスコードを学べる4択クイズゲームです。Ruby2Dを使用して開発されています。
 
-<img width="790" height="592" alt="image" src="https://github.com/user-attachments/assets/a91c7025-aec5-42ca-85f6-fc16caa2bd70" />
+<img width="796" height="593" alt="image" src="https://github.com/user-attachments/assets/a3ecfbf0-3954-4811-a28e-fdd870486dde" />
 
 <img width="794" height="592" alt="image" src="https://github.com/user-attachments/assets/ef477744-e88d-4249-8b6b-fc773551b66e" />
 
