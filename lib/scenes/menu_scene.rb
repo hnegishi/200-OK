@@ -87,21 +87,9 @@ class MenuScene < Scene
     )
     @challenge_card.elements.each { |el| add_element(el) }
 
-    @endless_card = ModeCard.new(
-      x: card_x,
-      y: start_y + card_height + card_margin,
-      width: card_width,
-      height: card_height,
-      title: 'エンドレスモード',
-      description: '1回ミスしたら終了の無限チャレンジ',
-      high_score: endless_high,
-      accent_color: '#e94560'
-    )
-    @endless_card.elements.each { |el| add_element(el) }
-
     @reverse_card = ModeCard.new(
       x: card_x,
-      y: start_y + (card_height + card_margin) * 2,
+      y: start_y + card_height + card_margin,
       width: card_width,
       height: card_height,
       title: '逆引きモード',
@@ -110,6 +98,18 @@ class MenuScene < Scene
       accent_color: '#6c5ce7'
     )
     @reverse_card.elements.each { |el| add_element(el) }
+
+    @endless_card = ModeCard.new(
+      x: card_x,
+      y: start_y + (card_height + card_margin) * 2,
+      width: card_width,
+      height: card_height,
+      title: 'エンドレスモード',
+      description: '1回ミスしたら終了の無限チャレンジ',
+      high_score: endless_high,
+      accent_color: '#e94560'
+    )
+    @endless_card.elements.each { |el| add_element(el) }
   end
 
   def create_dictionary_button
