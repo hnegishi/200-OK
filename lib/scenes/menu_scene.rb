@@ -93,7 +93,7 @@ class MenuScene < Scene
       width: card_width,
       height: card_height,
       title: '逆引きモード',
-      description: '説明文からステータスコードを当てよう',
+      description: 'チャレンジモードの逆引きバージョンに挑戦',
       high_score: reverse_high,
       accent_color: '#6c5ce7'
     )
