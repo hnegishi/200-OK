@@ -107,6 +107,18 @@ class PlayingScene < Scene
       z: Constants::ZIndex::TEXT
     )
     add_element(@status_code_text)
+
+    # 逆引きモード用の問題文表示
+    @question_description_text = Text.new(
+      '',
+      x: Constants::Layout::BUTTON_X,
+      y: Constants::Layout::STATUS_CODE_Y + 20,
+      size: 28,
+      color: Constants::Colors::TEXT_PRIMARY,
+      z: Constants::ZIndex::TEXT
+    )
+    @question_description_text.remove
+    add_element(@question_description_text)
   end
 
   def create_score_display
@@ -209,21 +221,44 @@ class PlayingScene < Scene
   end
 
   def update_display
-    @status_code_text.text = @current_question.correct_code.to_s
     @score_text.text = "スコア: #{@score}"
     @progress_text.text = progress_label
 
-    @choice_buttons.each_with_index do |button, index|
-      description = @current_question.choice_description(index)
-      button.text = description
-      button.set_state(Button::STATE_DEFAULT)
-      button.enabled = true
+    if reverse_mode?
+      # 逆引きモード: 説明文を問題として表示、選択肢はStatus Code
+      @status_code_text.remove
+      @question_description_text.text = @current_question.correct_description
+      @question_description_text.add
+
+      @choice_buttons.each_with_index do |button, index|
+        button.align = :center
+        button.text = @current_question.choice_code(index)
+        button.set_state(Button::STATE_DEFAULT)
+        button.enabled = true
+      end
+    else
+      # 通常モード: Status Codeを問題として表示、選択肢は説明文
+      @status_code_text.text = @current_question.correct_code.to_s
+      @status_code_text.add
+      @question_description_text.remove
+
+      @choice_buttons.each_with_index do |button, index|
+        button.align = :left
+        description = @current_question.choice_description(index)
+        button.text = description
+        button.set_state(Button::STATE_DEFAULT)
+        button.enabled = true
+      end
     end
+  end
+
+  def reverse_mode?
+    @mode == Constants::GameMode::REVERSE
   end
 
   def progress_label
     case @mode
-    when Constants::GameMode::CHALLENGE
+    when Constants::GameMode::CHALLENGE, Constants::GameMode::REVERSE
       "問題: #{@question_number}/#{Constants::GameSettings::MODE_CHALLENGE_QUESTIONS}"
     when Constants::GameMode::ENDLESS
       "ミス: #{@wrong_count}/#{Constants::GameSettings::MODE_ENDLESS_MAX_WRONG}"
@@ -258,6 +293,15 @@ class PlayingScene < Scene
       @feedback_text.color = Constants::Colors::ERROR
     end
     @feedback_text.add
+
+    # 逆引きモードの場合、正解のステータスコードを表示
+    if reverse_mode?
+      @status_code_text.text = @current_question.correct_code.to_s
+      @status_code_text.add
+    end
+
+    # 問題文を非表示にする（逆引きモード）
+    @question_description_text.remove if reverse_mode?
 
     hide_timer_bar
     show_explanation
@@ -340,7 +384,7 @@ class PlayingScene < Scene
 
   def game_over?
     case @mode
-    when Constants::GameMode::CHALLENGE
+    when Constants::GameMode::CHALLENGE, Constants::GameMode::REVERSE
       @question_number >= Constants::GameSettings::MODE_CHALLENGE_QUESTIONS
     when Constants::GameMode::ENDLESS
       @wrong_count >= Constants::GameSettings::MODE_ENDLESS_MAX_WRONG

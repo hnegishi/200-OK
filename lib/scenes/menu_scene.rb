@@ -33,6 +33,8 @@ class MenuScene < Scene
       change_scene(Constants::Scenes::PLAYING, mode: Constants::GameMode::CHALLENGE)
     elsif @endless_card.clicked?(x, y)
       change_scene(Constants::Scenes::PLAYING, mode: Constants::GameMode::ENDLESS)
+    elsif @reverse_card.clicked?(x, y)
+      change_scene(Constants::Scenes::PLAYING, mode: Constants::GameMode::REVERSE)
     elsif @dictionary_button.clicked?(x, y)
       change_scene(Constants::Scenes::DICTIONARY)
     end
@@ -65,14 +67,17 @@ class MenuScene < Scene
   def create_mode_cards
     challenge_high = ScoreManager.high_score(Constants::GameMode::CHALLENGE)
     endless_high = ScoreManager.high_score(Constants::GameMode::ENDLESS)
+    reverse_high = ScoreManager.high_score(Constants::GameMode::REVERSE)
 
     card_width = 500
-    card_height = 85
+    card_height = 75
+    card_margin = 10
     card_x = Constants::WINDOW_WIDTH / 2 - card_width / 2
+    start_y = 295
 
     @challenge_card = ModeCard.new(
       x: card_x,
-      y: 310,
+      y: start_y,
       width: card_width,
       height: card_height,
       title: 'チャレンジモード',
@@ -84,7 +89,7 @@ class MenuScene < Scene
 
     @endless_card = ModeCard.new(
       x: card_x,
-      y: 420,
+      y: start_y + card_height + card_margin,
       width: card_width,
       height: card_height,
       title: 'エンドレスモード',
@@ -93,6 +98,18 @@ class MenuScene < Scene
       accent_color: '#e94560'
     )
     @endless_card.elements.each { |el| add_element(el) }
+
+    @reverse_card = ModeCard.new(
+      x: card_x,
+      y: start_y + (card_height + card_margin) * 2,
+      width: card_width,
+      height: card_height,
+      title: '逆引きモード',
+      description: '説明文からステータスコードを当てよう',
+      high_score: reverse_high,
+      accent_color: '#6c5ce7'
+    )
+    @reverse_card.elements.each { |el| add_element(el) }
   end
 
   def create_dictionary_button

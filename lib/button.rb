@@ -41,6 +41,11 @@ class Button
     @text.x = calculate_text_x
   end
 
+  def align=(new_align)
+    @align = new_align
+    @text.x = calculate_text_x
+  end
+
   def set_state(new_state)
     @state = new_state
     update_color

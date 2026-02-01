@@ -85,6 +85,7 @@ module Constants
   module GameMode
     CHALLENGE = :challenge
     ENDLESS = :endless
+    REVERSE = :reverse
   end
 
   # Scene Names

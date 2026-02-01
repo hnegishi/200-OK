@@ -22,6 +22,10 @@ class Question
     HttpData.description(@choices[index])
   end
 
+  def choice_code(index)
+    @choices[index].to_s
+  end
+
   private
 
   def generate_question
